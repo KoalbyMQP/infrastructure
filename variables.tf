@@ -41,3 +41,52 @@ variable "ssh_timeout" {
     error_message = "SSH timeout must be between 10 and 300 seconds."
   }
 }
+
+# GitHub Runner Variables
+variable "github_organization" {
+  description = "GitHub organization name (e.g., KoalbyMQP)"
+  type        = string
+  default     = ""
+}
+
+variable "github_runner_token" {
+  description = "GitHub runner registration token from organization settings"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "runner_name" {
+  description = "Base name for GitHub runners"
+  type        = string
+  default     = "server-runner"
+}
+
+variable "runner_labels" {
+  description = "Labels to assign to GitHub runners"
+  type        = list(string)
+  default     = ["self-hosted", "linux", "x64"]
+}
+
+variable "runner_count" {
+  description = "Number of GitHub runners to create"
+  type        = number
+  default     = 1
+
+  validation {
+    condition     = var.runner_count >= 1 && var.runner_count <= 10
+    error_message = "Runner count must be between 1 and 10."
+  }
+}
+
+variable "enable_github_runners" {
+  description = "Whether to enable GitHub runners setup"
+  type        = bool
+  default     = false
+}
+
+variable "docker_image" {
+  description = "Docker image to use for GitHub runners"
+  type        = string
+  default     = "myoung34/github-runner:latest"
+}

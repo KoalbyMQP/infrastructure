@@ -85,28 +85,28 @@ if ! command -v docker &> /dev/null; then
     log "Adding Docker's official GPG key..."
     # Add Docker's official GPG key
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-    
+
     log "Adding Docker repository..."
     # Add Docker repository
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-    
+
     log "Updating package index with Docker repository..."
     # Update package index
     apt-get update -qq
-    
+
     log "Installing Docker Engine and components..."
     # Install Docker Engine
     apt-get install -y -qq docker-ce docker-ce-cli containerd.io docker-compose-plugin
-    
+
     log "Configuring Docker permissions for ${SSH_USER} user..."
     # Add user to docker group
     usermod -aG docker "${SSH_USER}"
-    
+
     log "Starting Docker service..."
     # Start and enable Docker service
     systemctl enable docker
     systemctl start docker
-    
+
     success "Docker installed and configured successfully"
 else
     warning "Docker is already installed, skipping installation"

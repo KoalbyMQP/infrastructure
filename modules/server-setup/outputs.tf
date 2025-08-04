@@ -20,16 +20,16 @@ output "setup_timestamp" {
 
 output "setup_trigger_hash" {
   description = "Hash of setup script for tracking changes"
-  value       = filemd5("${path.root}/scripts/basic-server-setup.sh")
+  value       = filemd5("${path.module}/../../scripts/basic-server-setup.sh")
   sensitive   = false
 }
 
 output "config_files_hash" {
   description = "Combined hash of all configuration files"
   value = {
-    docker_daemon = filemd5("${path.root}/configs/docker-daemon.json")
-    docker_limits = filemd5("${path.root}/configs/docker-limits.conf")
-    sysctl_config = filemd5("${path.root}/configs/sysctl-optimizations.conf")
+    docker_daemon = filemd5("${path.module}/../../configs/docker-daemon.json")
+    docker_limits = filemd5("${path.module}/../../configs/docker-limits.conf")
+    sysctl_config = filemd5("${path.module}/../../configs/sysctl-optimizations.conf")
   }
   sensitive = false
 }

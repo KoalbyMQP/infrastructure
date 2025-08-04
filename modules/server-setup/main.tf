@@ -58,10 +58,10 @@ resource "null_resource" "server_setup" {
 
   # Trigger re-run if script or config files change
   triggers = {
-    script_hash        = filemd5("${path.root}/scripts/basic-server-setup.sh")
-    docker_daemon_hash = filemd5("${path.root}/configs/docker-daemon.json")
-    docker_limits_hash = filemd5("${path.root}/configs/docker-limits.conf")
-    sysctl_config_hash = filemd5("${path.root}/configs/sysctl-optimizations.conf")
+    script_hash        = filemd5("${path.module}/../../scripts/basic-server-setup.sh")
+    docker_daemon_hash = filemd5("${path.module}/../../configs/docker-daemon.json")
+    docker_limits_hash = filemd5("${path.module}/../../configs/docker-limits.conf")
+    sysctl_config_hash = filemd5("${path.module}/../../configs/sysctl-optimizations.conf")
     server_ip          = var.server_ip
   }
 }

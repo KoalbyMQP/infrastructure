@@ -10,7 +10,7 @@ This repository contains the Infrastructure as Code (IaC) configuration for our 
 Our infrastructure is organized into modular components:
 
 - **Server Setup** - Base server configuration and SSH connectivity
-- **PXE Server** - Network boot server configuration  
+- **PXE Server** - Network boot server configuration
 - **GitHub Runners** - Self-hosted GitHub Actions runners
 
 ## Prerequisites
@@ -38,7 +38,21 @@ server_ip            = "192.168.1.100"
 ssh_username         = "ubuntu"
 ssh_private_key_path = "~/.ssh/id_rsa"
 ssh_timeout          = 30
+
+# GitHub Runners (optional)
+enable_github_runners = true
+github_organization   = "KoalbyMQP"
+github_runner_token   = "YOUR_RUNNER_TOKEN_HERE"
+runner_name           = "server-runner"
+runner_count          = 2
+runner_labels         = ["self-hosted", "linux", "x64", "docker"]
 ```
+
+**To get your GitHub runner token:**
+1. Go to GitHub.com → Your Organization → Settings → Actions → Runners
+2. Click "New runner" → "New self-hosted runner"
+3. Select Linux x64
+4. Copy the token from the configure command
 
 ### 3. Initialize and Deploy
 ```bash
@@ -80,6 +94,17 @@ terraform apply
 | `ssh_username` | SSH username for server access | `string` | `ubuntu` |
 | `ssh_private_key_path` | Path to SSH private key | `string` | `~/.ssh/id_rsa` |
 | `ssh_timeout` | SSH connection timeout (seconds) | `number` | `30` |
+
+### GitHub Runner Variables (Optional)
+
+| Variable | Description | Type | Default |
+|----------|-------------|------|---------|
+| `enable_github_runners` | Enable GitHub runners setup | `bool` | `false` |
+| `github_organization` | GitHub organization name | `string` | `""` |
+| `github_runner_token` | Runner registration token | `string` | `""` |
+| `runner_name` | Base name for runners | `string` | `server-runner` |
+| `runner_count` | Number of runners to create | `number` | `1` |
+| `runner_labels` | Labels for runners | `list(string)` | `["self-hosted", "linux", "x64"]` |
 
 ## Development
 
