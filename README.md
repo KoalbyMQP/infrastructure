@@ -1,9 +1,7 @@
 # Infrastructure Repository
 
 [![Terraform](https://img.shields.io/badge/Terraform-%E2%89%A5%201.12-623CE4?logo=terraform&logoColor=white)](https://www.terraform.io/)
-[![License](https://img.shields.io/github/license/KoalbyMQP/infra)](LICENSE)
-[![GitHub Issues](https://img.shields.io/github/issues/KoalbyMQP/infra)](https://github.com/KoalbyMQP/infra/issues)
-[![GitHub Stars](https://img.shields.io/github/stars/KoalbyMQP/infra)](https://github.com/KoalbyMQP/infra/stargazers)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 This repository contains the Infrastructure as Code (IaC) configuration for our server infrastructure, built with [Terraform](https://www.terraform.io). It provides automated provisioning, configuration, and management of our bare metal Ubuntu servers.
 
@@ -111,4 +109,4 @@ terraform plan
 
 ---
 
-Built with [Terraform](https://www.terraform.io)
+Built with ❤️ for [Terraform](https://www.terraform.io)
