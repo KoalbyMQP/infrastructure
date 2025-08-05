@@ -37,20 +37,32 @@ variable "github_app_private_key_path" {
   sensitive   = true
 }
 
+variable "runner_configurations" {
+  description = "List of runner configurations with different Docker images"
+  type = list(object({
+    name         = string
+    count        = number
+    docker_image = string
+    labels       = list(string)
+  }))
+  default = []
+}
+
+# Legacy variables for backward compatibility
 variable "runner_name" {
-  description = "Name for the GitHub runner"
+  description = "Name for the GitHub runner (deprecated - use runner_configurations)"
   type        = string
   default     = "self-hosted-runner"
 }
 
 variable "runner_labels" {
-  description = "Labels to assign to the GitHub runner"
+  description = "Labels to assign to the GitHub runner (deprecated - use runner_configurations)"
   type        = list(string)
   default     = ["self-hosted", "linux", "x64"]
 }
 
 variable "runner_count" {
-  description = "Number of runners to create (max: number of names in names.txt)"
+  description = "Number of runners to create (max: number of names in names.txt) (deprecated - use runner_configurations)"
   type        = number
   default     = 1
 
@@ -61,7 +73,7 @@ variable "runner_count" {
 }
 
 variable "docker_image" {
-  description = "Docker image to use for GitHub runners"
+  description = "Docker image to use for GitHub runners (deprecated - use runner_configurations)"
   type        = string
   default     = "myoung34/github-runner:latest"
 }

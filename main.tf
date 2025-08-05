@@ -48,8 +48,13 @@ module "github_runners" {
   github_organization         = var.github_organization
   github_app_id               = var.github_app_id
   github_app_private_key_path = var.github_app_private_key_path
-  runner_name                 = var.runner_name
-  runner_labels               = var.runner_labels
-  runner_count                = var.runner_count
-  docker_image                = var.docker_image
+
+  # New multiple configuration support
+  runner_configurations = var.runner_configurations
+
+  # Legacy single configuration support for backward compatibility
+  runner_name   = var.runner_name
+  runner_labels = var.runner_labels
+  runner_count  = var.runner_count
+  docker_image  = var.docker_image
 }

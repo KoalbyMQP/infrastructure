@@ -65,20 +65,57 @@ variable "github_app_private_key_path" {
   }
 }
 
+variable "enable_github_runners" {
+  description = "Whether to enable GitHub runners setup"
+  type        = bool
+  default     = false
+}
+
+variable "runner_configurations" {
+  description = "List of runner configurations with different Docker images"
+  type = list(object({
+    name         = string
+    count        = number
+    docker_image = string
+    labels       = list(string)
+  }))
+  default = [
+    {
+      name         = "basic-runner"
+      count        = 1
+      docker_image = "myoung34/github-runner:latest"
+      labels       = ["self-hosted", "linux", "x64", "basic"]
+    }
+  ]
+
+  validation {
+    condition = alltrue([
+      for config in var.runner_configurations : config.count >= 1 && config.count <= 10
+    ])
+    error_message = "Each runner configuration count must be between 1 and 10."
+  }
+
+  validation {
+    condition     = length(var.runner_configurations) > 0
+    error_message = "At least one runner configuration must be provided."
+  }
+}
+
+# Legacy variables for backward compatibility
 variable "runner_name" {
-  description = "Base name for GitHub runners"
+  description = "Base name for GitHub runners (deprecated - use runner_configurations)"
   type        = string
   default     = "server-runner"
 }
 
 variable "runner_labels" {
-  description = "Labels to assign to GitHub runners"
+  description = "Labels to assign to GitHub runners (deprecated - use runner_configurations)"
   type        = list(string)
   default     = ["self-hosted", "linux", "x64"]
 }
 
 variable "runner_count" {
-  description = "Number of GitHub runners to create"
+  description = "Number of GitHub runners to create (deprecated - use runner_configurations)"
   type        = number
   default     = 1
 
@@ -88,14 +125,8 @@ variable "runner_count" {
   }
 }
 
-variable "enable_github_runners" {
-  description = "Whether to enable GitHub runners setup"
-  type        = bool
-  default     = false
-}
-
 variable "docker_image" {
-  description = "Docker image to use for GitHub runners"
+  description = "Docker image to use for GitHub runners (deprecated - use runner_configurations)"
   type        = string
   default     = "myoung34/github-runner:latest"
 }
