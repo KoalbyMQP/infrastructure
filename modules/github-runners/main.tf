@@ -7,6 +7,16 @@ terraform {
   }
 }
 
+# Read the names from the names.txt file
+locals {
+  runner_names = split("\n", trimspace(file("${path.module}/names.txt")))
+}
+
+# Validate that we don't try to create more runners than we have names
+locals {
+  validation = var.runner_count <= length(local.runner_names) ? true : tobool("Error: runner_count (${var.runner_count}) exceeds available names (${length(local.runner_names)})")
+}
+
 # Copy GitHub App private key to remote host
 resource "null_resource" "github_app_key_setup" {
   connection {
@@ -57,9 +67,42 @@ resource "null_resource" "runner_directories" {
 
   provisioner "remote-exec" {
     inline = [
-      "mkdir -p $HOME/github-runners/runner-${count.index + 1}",
-      "chmod 755 $HOME/github-runners/runner-${count.index + 1}"
+      "mkdir -p $HOME/github-runners/${local.runner_names[count.index]}",
+      "chmod 755 $HOME/github-runners/${local.runner_names[count.index]}",
+      "ls -la $HOME/github-runners/${local.runner_names[count.index]}"
     ]
+  }
+
+  # Trigger recreation if runner names change
+  triggers = {
+    runner_name = local.runner_names[count.index]
+    server_ip   = var.server_ip
+  }
+}
+
+# Verify directories exist before creating containers
+resource "null_resource" "verify_directories" {
+  count = var.runner_count
+
+  depends_on = [null_resource.runner_directories]
+
+  connection {
+    type        = "ssh"
+    host        = var.server_ip
+    user        = var.ssh_username
+    private_key = file(var.ssh_private_key_path)
+    timeout     = "${var.ssh_timeout}s"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "test -d $HOME/github-runners/${local.runner_names[count.index]} || exit 1",
+      "echo 'Directory verified: $HOME/github-runners/${local.runner_names[count.index]}'"
+    ]
+  }
+
+  triggers = {
+    runner_name = local.runner_names[count.index]
   }
 }
 
@@ -74,17 +117,17 @@ resource "docker_container" "github_runner" {
   count = var.runner_count
 
   depends_on = [
-    null_resource.runner_directories,
+    null_resource.verify_directories,
     docker_image.github_runner
   ]
 
-  name  = "github-runner-${count.index + 1}"
+  name  = "github-runner-${local.runner_names[count.index]}"
   image = docker_image.github_runner.image_id
 
   restart = "unless-stopped"
 
   env = [
-    "RUNNER_NAME=${var.runner_name}-${count.index + 1}",
+    "RUNNER_NAME=${local.runner_names[count.index]}",
     "APP_ID=${var.github_app_id}",
     "APP_LOGIN=${var.github_organization}",
     "ORG_NAME=${var.github_organization}",
@@ -105,7 +148,7 @@ resource "docker_container" "github_runner" {
 
   # Mount runner work directory
   mounts {
-    source = "/home/${var.ssh_username}/github-runners/runner-${count.index + 1}"
+    source = "/home/${var.ssh_username}/github-runners/${local.runner_names[count.index]}"
     target = "/tmp/runner"
     type   = "bind"
   }

@@ -50,9 +50,14 @@ variable "runner_labels" {
 }
 
 variable "runner_count" {
-  description = "Number of runners to create"
+  description = "Number of runners to create (max: number of names in names.txt)"
   type        = number
   default     = 1
+
+  validation {
+    condition     = var.runner_count >= 1
+    error_message = "Runner count must be at least 1."
+  }
 }
 
 variable "docker_image" {
