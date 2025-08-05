@@ -26,8 +26,13 @@ variable "github_organization" {
   type        = string
 }
 
-variable "github_runner_token" {
-  description = "GitHub runner registration token (get from org settings)"
+variable "github_app_id" {
+  description = "GitHub App ID for runner registration"
+  type        = string
+}
+
+variable "github_app_private_key_path" {
+  description = "Path to the GitHub App private key file (.pem)"
   type        = string
   sensitive   = true
 }

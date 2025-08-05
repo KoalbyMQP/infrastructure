@@ -49,11 +49,20 @@ variable "github_organization" {
   default     = ""
 }
 
-variable "github_runner_token" {
-  description = "GitHub runner registration token from organization settings"
+variable "github_app_id" {
+  description = "GitHub App ID for runner registration"
   type        = string
-  default     = ""
+}
+
+variable "github_app_private_key_path" {
+  description = "Path to the GitHub App private key file (.pem)"
+  type        = string
   sensitive   = true
+
+  validation {
+    condition     = length(var.github_app_private_key_path) > 0 && can(regex("\\.pem$", var.github_app_private_key_path))
+    error_message = "GitHub App private key path must end with .pem."
+  }
 }
 
 variable "runner_name" {

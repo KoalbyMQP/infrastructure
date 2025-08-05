@@ -42,17 +42,15 @@ ssh_timeout          = 30
 # GitHub Runners (optional)
 enable_github_runners = true
 github_organization   = "KoalbyMQP"
-github_runner_token   = "YOUR_RUNNER_TOKEN_HERE"
+
+# GitHub App authentication
+github_app_id                 = "123456"
+github_app_private_key_path   = "~/.ssh/keys/github-app-private-key.pem"
+
 runner_name           = "server-runner"
 runner_count          = 2
 runner_labels         = ["self-hosted", "linux", "x64", "docker"]
 ```
-
-**To get your GitHub runner token:**
-1. Go to GitHub.com → Your Organization → Settings → Actions → Runners
-2. Click "New runner" → "New self-hosted runner"
-3. Select Linux x64
-4. Copy the token from the configure command
 
 ### 3. Initialize and Deploy
 ```bash
@@ -101,7 +99,8 @@ terraform apply
 |----------|-------------|------|---------|
 | `enable_github_runners` | Enable GitHub runners setup | `bool` | `false` |
 | `github_organization` | GitHub organization name | `string` | `""` |
-| `github_runner_token` | Runner registration token | `string` | `""` |
+| `github_app_id` | GitHub App ID | `string` | - |
+| `github_app_private_key_path` | Path to GitHub App private key (.pem) | `string` | - |
 | `runner_name` | Base name for runners | `string` | `server-runner` |
 | `runner_count` | Number of runners to create | `number` | `1` |
 | `runner_labels` | Labels for runners | `list(string)` | `["self-hosted", "linux", "x64"]` |
