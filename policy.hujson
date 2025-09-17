@@ -17,7 +17,7 @@
         "autogroup:member"
       ],
       "dst": [
-        "*"
+        "*:*"
       ],
       "users": [
         "autogroup:nonroot",
