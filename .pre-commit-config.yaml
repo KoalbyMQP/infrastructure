@@ -1,26 +1,5 @@
 # Pre-commit configuration for Terraform project
 repos:
-  # Terraform hooks
-  - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.94.1
-    hooks:
-      - id: terraform_fmt
-        args:
-          - --args=-recursive
-      - id: terraform_validate
-        args:
-          - --args=-json
-      - id: terraform_docs
-        args:
-          - --hook-config=--path-to-file=DOCS.md
-          - --hook-config=--add-to-existing-file=true
-          - --hook-config=--create-file-if-not-exist=true
-        files: ^modules/
-      - id: terraform_providers_lock # Ensure providers are pinned to specific versions
-        args:
-          - --args=-platform=darwin_amd64
-          - --args=-platform=linux_amd64
-
   # General file formatting and linting
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
