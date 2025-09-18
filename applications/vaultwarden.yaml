@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vaultwarden
+  namespace: default
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  project: default
+  source:
+    repoURL: https://guerzon.github.io/vaultwarden
+    chart: vaultwarden
+    targetRevision: 0.34.3
+    helm:
+      values: |
+        domain: "https://vault.taileb8233.ts.net"
+
+        vaultwarden:
+          storage:
+            enabled: true
+            size: 10Gi
+
+        ingress:
+          enabled: false
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: vaultwarden
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
