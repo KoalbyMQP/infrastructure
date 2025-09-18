@@ -7,9 +7,9 @@ spec:
   ingressClassName: tailscale
   tls:
     - hosts:
-        - vault.taileb8233.ts.net
+        - vaultwarden
   rules:
-    - host: vault.taileb8233.ts.net
+    - host: vaultwarden
       http:
         paths:
           - path: /
