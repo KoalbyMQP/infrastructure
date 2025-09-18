@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/KoalbyMQP/infrastructure
     targetRevision: HEAD
-    path: application/manifests/argocd
+    path: applications/manifests/argocd
   destination:
     server: https://kubernetes.default.svc
     namespace: default
