@@ -18,12 +18,7 @@ spec:
           admin:
             password: "admin123"
           ingress:
-            enabled: true
-            ingressClassName: tailscale
-            hostName: jenkins
-            tls:
-              - hosts:
-                  - jenkins
+            enabled: false
 
         persistence:
           enabled: true
