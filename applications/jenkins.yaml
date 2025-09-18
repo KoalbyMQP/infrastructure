@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jenkins
+  namespace: default
+  annotations:
+    argocd.argoproj.io/sync-wave: "30"
+spec:
+  project: default
+  source:
+    repoURL: https://charts.jenkins.io
+    chart: jenkins
+    targetRevision: 5.8.86
+    helm:
+      values: |
+        controller:
+          serviceType: ClusterIP
+          adminPassword: "admin123"
+          ingress:
+            enabled: true
+            ingressClassName: tailscale
+            hostName: jenkins
+            tls:
+              - hosts:
+                  - jenkins
+
+        persistence:
+          enabled: true
+          size: 20Gi
+
+        serviceAccount:
+          create: true
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: jenkins
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
