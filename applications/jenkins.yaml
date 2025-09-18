@@ -15,7 +15,8 @@ spec:
       values: |
         controller:
           serviceType: ClusterIP
-          adminPassword: "admin123"
+          admin:
+            password: "admin123"
           ingress:
             enabled: true
             ingressClassName: tailscale
