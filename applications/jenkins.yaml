@@ -19,10 +19,10 @@ spec:
             password: "admin123"
           ingress:
             enabled: false
-          # Add extraPorts to expose 8443
           extraPorts:
             - name: https
               port: 8443
+              targetPort: 8080  # Route external 8443 to Jenkins on 8080
 
         persistence:
           enabled: true
