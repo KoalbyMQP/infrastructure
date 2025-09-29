@@ -10,7 +10,7 @@ DefaultDependencies=no
 Type=oneshot
 RemainAfterExit=yes
 ExecStart=/bin/true
-ExecStop=/opt/scripts/slack-shutdown-notify.sh
+ExecStop=/home/lab/shutdown_with_slack.sh
 TimeoutStopSec=360
 Environment="SLACK_WEBHOOK_URL=your_webhook_url_here"
 
