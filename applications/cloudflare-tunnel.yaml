@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: cloudflare-tunnel
-  namespace: argocd
+  namespace: default
   annotations:
     argocd.argoproj.io/sync-wave: "10"
 spec:
