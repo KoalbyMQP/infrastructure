@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     repoURL: https://cloudflare.github.io/helm-charts
-    chart: cloudflare-tunnel
+    chart: cloudflare-tunnel-remote
     targetRevision: 0.1.2
     helm:
       values: |
